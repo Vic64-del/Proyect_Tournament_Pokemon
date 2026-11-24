@@ -35,31 +35,31 @@ int main(){
     
     base_pokemon = fopen("data/pokedex.txt","r");
     if(base_pokemon == NULL){
-        fprintf(stderr,"Error! Codigo de error: 1\n");
+        fprintf(stderr,"Error! Codigo de error: 1 (No se puede abrir el archivo o inexistente)\n");
         return -1;
     }
 
     base_tipos = fopen("data/tipos.txt","r");           //Comprobacion de la existencia de archivos
     if(base_tipos == NULL){
-        fprintf(stderr,"Error! Codigo de error: 1\n");
+        fprintf(stderr,"Error! Codigo de error: 1 (No se puede abrir el archivo o inexistente)\n");
         return -1;
     }
 
     base_trainers = fopen("data/entrenadores.txt","r");
     if(base_trainers == NULL){
-        fprintf(stderr,"Error! Codigo de error: 1\n");
+        fprintf(stderr,"Error! Codigo de error: 1 (No se puede abrir el archivo o inexistente)\n");
         return -1;
     }
 
     base_results = fopen("data/resultados.txt","r");
     if(base_results == NULL){
-        fprintf(stderr,"Error! Codigo de error: 1\n");
+        fprintf(stderr,"Error! Codigo de error: 1 (No se puede abrir el archivo o inexistente)\n");
         return -1;
     }
 
     hist_combats = fopen("data/historial.txt","w+");
     if(hist_combats == NULL){
-        fprintf(stderr,"Error! Codigo de error: 1\n");
+        fprintf(stderr,"Error! Codigo de error: 1 (No se puede abrir el archivo o inexistente)\n");
         return -1;   
     }
 
@@ -75,7 +75,7 @@ int main(){
 
     if(val){            //Verificamos con val 
 
-        fprintf(stderr,"Error! Codigo de error: 4\n");
+        fprintf(stderr,"Error! Codigo de error: 4 (Hay tipos duplicados, invalidos o erroneos)\n");
         return -1;
     }
 
@@ -131,7 +131,6 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
         printf("3. Crear equipo \n");                    printf("============\n");
         printf("4. Cargar entrenadores de archivo \n");      printf("============\n");
         printf("5. Consultar entrenadores \n");          printf("============\n");
-
         printf("6. Consultar podio \n");           printf("============\n");
         printf("7. Cargar resultados de archivo \n");            printf("============\n");
         printf("8. Realizar Gran Torneo Pokemon \n");                  printf("============\n");
@@ -140,9 +139,8 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
         printf("11. Consultar enfrentamientos \n");              printf("============\n");
         printf("12. Configuracion \n");                 printf("============\n");
         printf("13. Salir\n");                       printf("============\n");
-        printf("14. Sugerencia para git \n");                printf("============\n");    
+        
         //consultar historial y enfrentamientos en opciones
-
 
         printf("/-Digite una opcion: ");
         scanf("%i",&read);

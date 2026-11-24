@@ -18,7 +18,7 @@ void iniciar_trainer(Trainer * sample, char nombre[], int id, int cant_poke){ //
     sample->trainer_team = malloc(sizeof(Team));    //ARREGLADO 15/11/26 CORTESIA DE LA IA Se le asigno al sizeof el tamano del apuntador a * Team, en vez del struct Team
 
     if(sample->trainer_team == NULL){
-        fprintf(stderr,"Error! Codigo de error: 50\n");      //COLOCAR CODIGO DE ERROR
+        fprintf(stderr,"Error! Codigo de error: 50 (No hay memoria suficiente para el apuntador a equipo)\n");      //COLOCAR CODIGO DE ERROR
         
     }
   

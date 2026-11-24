@@ -125,7 +125,7 @@ void construir_equipo(ptr_pok dex, Trainer * ptr, int n, int nivel){  //Construy
     Ejemplar * new = malloc(sizeof(Ejemplar));
 
     if(new==NULL){
-        fprintf(stderr,"Error! Codigo de error: 50\n");       //Poner codigo de error
+        fprintf(stderr,"Error! Codigo de error: 50 (No hay suficiente memoria reservada al apuntador)\n");       //Poner codigo de error
     }
 
     new->siguiente = NULL;
