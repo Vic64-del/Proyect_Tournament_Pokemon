@@ -131,7 +131,6 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
         printf("3. Crear equipo \n");                    printf("============\n");
         printf("4. Cargar entrenadores de archivo \n");      printf("============\n");
         printf("5. Consultar entrenadores \n");          printf("============\n");
-
         printf("6. Consultar podio \n");           printf("============\n");
         printf("7. Cargar resultados de archivo \n");            printf("============\n");
         printf("8. Realizar Gran Torneo Pokemon \n");                  printf("============\n");
@@ -142,7 +141,6 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
         printf("13. Salir\n");                       printf("============\n");
         
         //consultar historial y enfrentamientos en opciones
-
 
         printf("/-Digite una opcion: ");
         scanf("%i",&read);
