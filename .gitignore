@@ -1,0 +1,11 @@
+# Ignorar archivos objeto y bibliotecas compiladas
+*.obj
+*.o
+*.a
+*.so
+*.lib
+*.exe
+
+# Si hay carpetas temporales de compilación, también ignóralas
+obj/
+bin/
