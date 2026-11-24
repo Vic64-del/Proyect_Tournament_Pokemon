@@ -140,6 +140,7 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
         printf("11. Consultar enfrentamientos \n");              printf("============\n");
         printf("12. Configuracion \n");                 printf("============\n");
         printf("13. Salir\n");                       printf("============\n");
+        printf("14. Sugerencia para git \n");                printf("============\n");    
         //consultar historial y enfrentamientos en opciones
 
 
