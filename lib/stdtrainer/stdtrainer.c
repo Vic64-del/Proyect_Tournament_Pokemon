@@ -1089,11 +1089,26 @@ void liberar_equipo_trainer(Trainer * sample){      //Libera la lista enlazada (
     }
 
     sample->trainer_team->cant_vivos = 0;
-    sample->trainer_team->equipo = NULL;        //Ahora el entrenador no tieene equipo
+    sample->trainer_team->equipo = NULL;        //Ahora el entrenador no tieene equipo, lo mandamos a null para no tener nada colgando
     sample->trainer_team->longitud = 0; 
 
 
 }
+
+void liberar_cabeza_trainer(Trainer * sample){      //Se libera el apuntador a *Team que cada entrenador posee
+    Team * aux;
+    aux = sample->trainer_team;
+    
+    if(aux!= NULL){
+        free(aux);          //liberamos
+        
+    } 
+    
+    sample->trainer_team = NULL;        //Ponemos a null para no tener apuntadores colgnates
+
+    aux = sample->trainer_team;
+}
+
 
 void imprimir_lista_entrenadores(lista_trainers arr_trainers, int cant_particip){     //Imprime en pantalla todos los entrenadores leidos del archivo
     for(int i=0;i<cant_particip;i++){

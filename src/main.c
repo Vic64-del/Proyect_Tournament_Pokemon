@@ -6,8 +6,9 @@
 
 
 void asignar_trainers_team_main(ptr_pok dex, lista_trainers arr_de_entrenadores, int nivel_poke, int cant_poke);
+
 void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * base_results, FILE * base_trainers, combats_result arr_resultados, 
-    tabla_grupos matriz_entrenador, Tabla_Tipos table, FILE * historial);
+    tabla_grupos matriz_entrenador, Tabla_Tipos table, FILE * historial, int * flag, int * amount_trainers);
 
 void consultar_dex_main(Pokedex dex);
 void consultar_trainer_main(lista_trainers mis_trainers, int cant);
@@ -21,6 +22,9 @@ int main(){
     FILE * base_trainers;   //Archivo con informacion de los 32 entrenadores para el torneo
     FILE * base_results;        //Archivo con resultados para los octavos de final
     FILE * hist_combats;        //Archivo no fuente, sino para escribir los combates realizados del torneo
+
+    int flag_mem;           //Variable para conocer si debemos liberar memoria o no
+    int cant_entren;            //Variable para conocer la cantidad de entrenadores al momento de liberar memoria
 
     Pokedex dex;
     lista_trainers lista_de_entrenador;    //Lista de entrenadores
@@ -74,7 +78,6 @@ int main(){
     int val = hay__tipos_duplicados(colec_atk);
 
     if(val){            //Verificamos con val 
-
         fprintf(stderr,"Error! Codigo de error: 4 (Hay tipos duplicados, invalidos o erroneos)\n");
         return -1;
     }
@@ -82,20 +85,28 @@ int main(){
 
     asociar_tipos_especie(dex,colec_atk);
 
-    //cargar_trainers(base_trainers,lista_de_entrenador);     //Cargamos la informacion de los entrenadores y se asignan sus equipos
-    //asignar_trainers_team_main(dex,lista_de_entrenador);    //Nota, se esta pasando el arreglo Pokedex a la funcion, aunque ella deba recibir un apuntador a *Especie
-
-    //cargar_results_file(base_results,arr_resultados);       //Se carga el archivo de resultados
-
     //Desde aqui, todo esta listo para comenzar el torneo
     system("clear");    //LINEA IMPORTANTE
     mostrar_menu_main(dex,lista_de_entrenador,base_results,                             //Decir que es lo que estamos pasando por parametro
-        base_trainers,arr_resultados,matriz_de_entrenador,table,hist_combats);
+        base_trainers,arr_resultados,matriz_de_entrenador,table,hist_combats,&flag_mem,&cant_entren);
 
 
-    //gran_torneo(matriz_de_entrenador,lista_de_entrenador,table,arr_resultados);  //Se realiza el torneo
+    //Habiendo salido del menu, vamos a liberar la memoria reservada
+    //Verificamos que si hay memoria que podemos liberar
+    if(flag_mem){
+        for(int i=0;i<cant_entren;i++){
+
+            if(lista_de_entrenador[i].trainer_team->equipo != NULL){        //Si el apuntador no lleva un NULL
+                liberar_equipo_trainer(&lista_de_entrenador[i]);
+                liberar_cabeza_trainer(&lista_de_entrenador[i]);        //tambien se libera el *Team
+                
+               
+            }   
+        } 
 
 
+    }
+    
     fclose(base_trainers);
     fclose(base_tipos);         //Se cierran los archivos
     fclose(base_pokemon);
@@ -105,7 +116,7 @@ int main(){
     return 0;
 }
 
-void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * base_results, FILE * base_trainers, combats_result arr_resultados, tabla_grupos matriz_entrenador, Tabla_Tipos table, FILE * historial){           //Mostrara el menu de opciones del programa
+void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * base_results, FILE * base_trainers, combats_result arr_resultados, tabla_grupos matriz_entrenador, Tabla_Tipos table, FILE * historial, int * flag, int * amout_trainers){           //Mostrara el menu de opciones del programa
     int flag_swicht=1;
     int read;
     int trigger_results = 0;       //Bandera para saber si ya se han cargado los resultados
@@ -149,7 +160,6 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
         switch(read){
             case 1:     //Mostrara toda la pokedex, por ahora
             consultar_dex_main(mi_pokedex);
-
             break;
 
             case 2:     //Se registrara un entrenador por pantalla, se restara en 1 la cantidad de leidos del archivo
@@ -168,6 +178,8 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
                 }    
 
 
+                *amout_trainers = cant_participantes;       //Tenemos la cantidad real de entrenadores
+                *flag = 1;      //Hay al menos un entrenador con memoria reservada
                 trigger_trainer =  1;
             }else{
                 printf("Cantidad maxima de entrenadores registrados \n");
@@ -178,14 +190,14 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
             break;
 
             
-            case 4:
+            case 4:             //Cargaremos los entrenadores del archivo, aun cuando se hayan cargado desde stdin
 
             cargar_trainers(base_trainers,mis_trainers,ind_arreglo_trainers,cant_poke);   //pasaremos el indice de los entrnadores cargados por input, para que se carge el resto de archivo    
 
             validar = hay_entrenadores_repetidos(mis_trainers,TRAINERS_TOURNAMENT);
 
             if(validar){    //Si validar recibe 1, hay repetidos, error
-                fprintf(stderr,"Error! Codigo de error: 3 \n");
+                fprintf(stderr,"Error! Codigo de error: 3 (Hay entrenadores repetidos, o error en la carga) \n");
                 exit(EXIT_FAILURE);
             }   
 
@@ -193,6 +205,8 @@ void mostrar_menu_main(Pokedex mi_pokedex, lista_trainers mis_trainers, FILE * b
             asignar_trainers_team_main(mi_pokedex,mis_trainers,nivel_poke,cant_poke);
             trigger_trainer = 1;
             cant_participantes = TRAINERS_TOURNAMENT;   //Ahora si hay 32;
+            *flag = 1;          //Ya hay entrenadores con memoria reservada
+            *amout_trainers = cant_participantes;       //Tenemos la cantidad real de entrenadores
             printf("Entrenadores han sido cargados de archivo, tambien sus equipos han sido asignados \n");               
             break;
 
@@ -667,6 +681,8 @@ void asignar_trainers_team_main(ptr_pok dex, lista_trainers arr_de_entrenadores,
     }
 
 }
+
+
 
 
 
