@@ -129,6 +129,7 @@ void debug_resultados(combats_result resultados, arreglo_trancision arr_grupos, 
 void mostrar_equipo_trainer(Trainer * ptr);
 void mostrar_ejemplar_trainer(Ejemplar * sample);
 void liberar_equipo_trainer(Trainer * sample);
+void liberar_cabeza_trainer(Trainer * sample);
 void imprimir_lista_entrenadores(lista_trainers arr_trainers, int particip);
 
 void buscar_entrenador_nombre(lista_trainers mis_train, char name[], int cant);
